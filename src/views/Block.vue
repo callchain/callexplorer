@@ -2,7 +2,7 @@
     <v-container class="block">
         <div class="ledger-header">
             <div class="ledger-nav d-flex justify-space-between">
-                <router-link :to="{name: 'Block', params: {height: height - 1}}">
+                
                     <div class="previous d-inline-flex align-center">
                         <v-img
                                 src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAcCAYAAABoMT8aAAAACXBIWXMAABYlAAAWJQFJUiTwAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAADsSURBVHgBpdUxDoIwFAbg97cX8AIaF3dnXZgMIzcAj+DoxhG8gRzD0clZdweMiyM3eBYSDQLF1/YNpLzm/9KSlIIcax1tUgIdiFARI4d7GEWrVamAcAOIVmAJEzO2f4Gx8OV8KhASrscICVsBaXgQcAn3ANfwD+AT/gK+4QYICdelGMh9ww0A4km3afbFJCzFrHa9LrhYR3FKgtLP8n6dzhcPgJLOMpLZfFGa+dsoUD9CEP0Z+CK6/eKD6G7DFekBrsgg4IJYASki+qmuojgD+NibYGTie8GCVFoKWLbzEgNtxHyDpTmE5tSq/Rs7UsE7QglKTAAAAABJRU5ErkJggg=="
@@ -11,12 +11,16 @@
                                 height="10"
                                 class="mr-2"
                         />
+                        <router-link :to="{name: 'Block', params: {height: height - 1}}">
                         {{height - 1}}
+                        </router-link>
                     </div>
-                </router-link>
-                <router-link :to="{name: 'Block', params: {height: height + 1}}">
+                
+                
                     <div class="next d-inline-flex align-center">
+                        <router-link :to="{name: 'Block', params: {height: height + 1}}">
                         {{height + 1}}
+                        </router-link>
                         <v-img
                                 src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAcCAYAAABoMT8aAAAACXBIWXMAABYlAAAWJQFJUiTwAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAADySURBVHgBpdW9EYJAEAXgfdCADeiQ0IQkRA4hHYAl2AEl2IHYBSGJxpob4NgAFbgeoI78entswCx787655Gbh+ZuIQHsilMRITnl2JEFZDCQqvFC9Q+DU84NIBIB40ZoIEYvZ2vWmAsR+FLfL0nHvAIVthMKV4xbq/DoJVJ85iP1pTBH798cEsbsDKdIDpMggIEFGAV0EpFFrP4gBPvQOGLEWMIGUFmkW6MkD41LrBs2TR9qdM2P7F5gKn/MsxZxw1WNOeBTQDQ8CknAPkIZbgEn4C5iGa2BOuKr3XjAL10B3L0jCzQ3UXlCvpFDRUhqu6gU1EMtbrTCbnAAAAABJRU5ErkJggg=="
                                 alt=""
@@ -25,13 +29,13 @@
                                 class="ml-2"
                         />
                     </div>
-                </router-link>
+                
             </div>
             <div class="ledger-info">
                 <div class="summary">
                     <div class="ledger-cols d-flex row">
                         <div class="ledger-col col-5">
-                            <div class="text-caption">Height</div>
+                            <div class="text-caption">HEIGHT</div>
                             <div class="value font-28 font-weight-bold">{{height | numberFormat}}</div>
                         </div>
                         <div class="ledger-col col-2 text-right">
@@ -39,8 +43,8 @@
                             <div class="value font-28 font-weight-bold">{{ledger.transactionHashes ? ledger.transactionHashes.length : 0}}</div>
                         </div>
                         <div class="ledger-col col-5 text-right">
-                            <div class="text-caption">Total Fees</div>
-                            <div class="value font-28 font-weight-bold text-no-wrap text-overflow">{{fee}}</div>
+                            <div class="text-caption">TOTAL FEES</div>
+                            <div class="value font-28 font-weight-bold text-no-wrap text-overflow fee-righ">{{fee}}</div>
                         </div>
                     </div>
                 </div>
@@ -123,39 +127,49 @@ import CheckNetwork from '../api/network'
     methods: {
         goHome() {
             this.$router.push('/');
+        },
+        async fetchData() {
+            var h = this.$route.params.height;
+            if (isNaN(Number(h))) {
+                this.goHome();
+                return;
+            }
+            this.height = Number(h);
+            
+            // check network status
+            var status = await CheckNetwork();
+            if (!status) {
+                this.$toast.error("fail to connect callchain");
+                return;
+            }
+
+            var api = this.$store.state.api;
+            this.tData.tList = [];
+            try {
+                this.ledger = await api.getLedger({ledgerVersion: this.height, includeTransactions: true});
+                console.dir(this.ledger);
+
+                if (this.ledger.transactionHashes) {
+                    for (var i = 0; i < this.ledger.transactionHashes.length; ++i) {
+                        var hash = this.ledger.transactionHashes[i];
+                        var tx = await api.getTransaction(hash);
+                        this.tData.tList.push(tx);
+                        this.fee += Number(tx.outcome.fee);
+                    }
+                }
+            } catch (e) {
+                this.$toast.error(e.message || e);
+                console.dir(e);
+                this.goHome();
+                return;
+            }
         }
     },
-    async created() {
-        var h = this.$route.params.height;
-        if (isNaN(Number(h))) {
-            this.goHome();
-            return;
-        }
-        this.height = Number(h);
-        
-        // check network status
-        var status = await CheckNetwork();
-        if (!status) {
-            this.$toast.error("fail to connect callchain");
-            return;
-        }
-
-        var api = this.$store.state.api;
-        try {
-            this.ledger = await api.getLedger({ledgerVersion: this.height, includeTransactions: true});
-            if (this.ledger.transactionHashes) {
-                for (var i = 0; i < this.ledger.transactionHashes.length; ++i) {
-                    var hash = this.ledger.transactionHashes[i];
-                    var tx = await api.getTransaction(hash);
-                    this.tData.tList.push(tx);
-                    this.fee += Number(tx.outcome.fee);
-                }
-            }
-        } catch (e) {
-            console.dir(e);
-            this.goHome();
-            return;
-        }
+    created() {
+        this.fetchData();
+    },
+    watch: {
+        '$route':'fetchData'
     }
   }
 </script>

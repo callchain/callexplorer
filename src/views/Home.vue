@@ -56,7 +56,7 @@
               </td>
               <td class="col-8">
                 <router-link :to="{name: 'Block', params: {height: item.ledgerVersion}}" class="word-break d-block mb-2 text-overflow">{{item.ledgerHash}}</router-link>
-                <p>{{item.transactionCount}} txns</p>
+                <p class="text-overflow">{{item.transactionCount}} txns</p>
               </td>
             </tr>
             </tbody>
@@ -160,6 +160,7 @@ export default {
   .cont-banner {
     display: flex;
     .table {
+
       &.tb-lft {
         .tab-tr td { border-bottom: none!important;}
         .tab-tr:nth-of-type(odd) {
@@ -177,6 +178,7 @@ export default {
       tr td {
         padding: 16px;
         min-height: 100px;
+
         p {margin-bottom: 10px;
           &:last-of-type {margin-bottom: 0;}
         }
@@ -191,6 +193,10 @@ export default {
         vertical-align: top;
       }
     }
+  }
+
+  .text-overflow {
+    max-width: 300px;
   }
 
   @media screen and (max-width: 1000px) {
