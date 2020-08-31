@@ -56,7 +56,7 @@
               </td>
               <td class="col-8">
                 <router-link :to="{name: 'Block', params: {height: item.ledgerVersion}}" class="word-break d-block mb-2 text-overflow">{{item.ledgerHash}}</router-link>
-                <p class="text-overflow">{{item.transactionCount}} txns</p>
+                <div class="text-md-left text-sm-right">{{item.transactionCount}} txns</div>
               </td>
             </tr>
             </tbody>

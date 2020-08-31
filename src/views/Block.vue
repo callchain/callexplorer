@@ -49,8 +49,8 @@
                     </div>
                 </div>
                 <div class="other d-flex justify-space-between">
-                    <div class="grey--text txt1">{{ledger.ledgerHash}}</div>
-                    <div class="grey--text">{{ledger.closeTime | dateFormat}}</div>
+                    <div class="grey--text txt1 mt-2">{{ledger.ledgerHash}}</div>
+                    <div class="grey--text mt-4">{{ledger.closeTime | dateFormat}}</div>
                 </div>
             </div>
         </div>

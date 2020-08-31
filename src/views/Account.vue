@@ -48,7 +48,7 @@
           <!--针对手机端表格-->
           <v-data-table
             :headers="transactions.theadData"
-            :items="transactions.data"
+            :items="transactionData"
             hide-default-footer
             class="smtable word-break"
             :disable-sort=true
@@ -407,6 +407,9 @@ const MORE_FLAG = 2;
       showMore() {
         var data = this.dataMap(this.tab);
         return data && !!data.marker;
+      },
+      transactionData() {
+        return this.transactions.data;
       }
     },
     created() {      

@@ -8,9 +8,9 @@
                 <div class="hash grey--text text-overflow mt-5">{{tx.id}}
                 </div>
             </div>
-            <div class="dates text-no-wrap text-right col-md-2 col-sm-12">
+            <div class="dates text-no-wrap text-md-right text-sm-left col-md-2 col-sm-12 mt-4">
                 <div class="grey--text">Ledger {{tx.outcome ? tx.outcome.ledgerVersion : ''}}</div>
-                <div class="time mt-5 grey--text">
+                <div class="time mt-3 grey--text">
                     {{tx.outcome ? tx.outcome.timestamp : '' | dateFormat}}
                 </div>
             </div>
@@ -38,7 +38,11 @@
             <!-- payment -->
             <tr v-if="tx.type === 'payment'">
                 <td>Amount</td>
-                <td class="grey--text">{{tx.specification ? tx.specification.source.maxAmount : '' | amountStr}}</td>
+                <td class="grey--text">
+                    <span v-if="!!tx.specification">
+                        {{tx.specification.destination.amount.value}} {{tx.specification.destination.amount.currency}}@<router-link :to="{name: 'Account', params: {address: tx.specification.destination.amount.counterparty}}">{{tx.specification.destination.amount.counterparty}}</router-link>
+                    </span>
+                </td>
             </tr>
             <tr v-if="tx.type === 'payment'">
                 <td>Destination</td>
@@ -91,7 +95,9 @@
             <tr v-if="tx.type === 'trustline'">
                 <td>Counterparty</td>
                 <td class="grey--text">
-                    <router-link :to="{name: 'Account', params: {address: tx.specification.counterparty}}">{{tx.specification.counterparty}}</router-link>
+                    <router-link :to="{name: 'Account', params: {address: tx.specification.counterparty}}">
+                        {{tx.specification.counterparty}}
+                    </router-link>
                 </td>
             </tr>
             <!-- settings -->
