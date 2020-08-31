@@ -26,7 +26,7 @@ Vue.use(VueRouter)
     component: () => import(/* webpackChunkName: "about" */ '../views/Transaction.vue')
   },
   {
-    path: '/token/:issue',
+    path: '/token/:issuer/:currency',
     name: 'Token',
     component: () => import(/* webpackChunkName: "about" */ '../views/Token.vue')
   },

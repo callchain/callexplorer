@@ -1,20 +1,21 @@
 <template>
     <v-container class="transaction">
         <div class="header d-flex justify-space-between row no-gutters">
-            <div class="summary pr-3 col-8">
-                <div class="type">{{tx.type}}</div>
+            <div class="summary pr-3 col-md-10 col-sm-12">
+                <div class="type"><h2>{{tx.type}}</h2></div>
                 <div class="status">
                 </div>
                 <div class="hash text-overflow mt-5">{{tx.id}}
                 </div>
             </div>
-            <div class="dates text-no-wrap text-right col-4">
-                <div>Ledger {{tx.outcome.ledgerVersion}}</div>
+            <div class="dates text-no-wrap text-right col-md-2 col-sm-12">
+                <div>Ledger {{tx.outcome ? tx.outcome.ledgerVersion : ''}}</div>
                 <div class="time mt-5">
-                    {{tx.outcome.timestamp | dateFormat}}
+                    {{tx.outcome ? tx.outcome.timestamp : '' | dateFormat}}
                 </div>
             </div>
         </div>
+        <v-divider class="mb-6 mt-6"></v-divider>
         <div class="mt-4">
             <p class="text-h6">Specification</p>
         </div>
@@ -23,7 +24,7 @@
             <tbody>
             <tr>
                 <td>Account</td>
-                <td class="text-wrap word-break">{{tx.address}}</td>
+                <td class="text-wrap word-break"><router-link :to="{name: 'Account', params: {address: tx.address}}">{{tx.address}}</router-link></td>
             </tr>
             <tr>
                 <td>Sequence</td>
@@ -31,11 +32,11 @@
             </tr>
             <tr>
                 <td>Fee</td>
-                <td>{{tx.outcome.fee}} CALL</td>
+                <td>{{tx.outcome ? tx.outcome.fee : ''}} CALL</td>
             </tr>
             <tr>
                 <td>Amount</td>
-                <td>TODO</td>
+                <td>{{}}</td>
             </tr>
             <tr>
                 <td>Destination</td>

@@ -31,9 +31,9 @@
                   :disable-sort=true
                   class="smtable word-break"
           >
-            <template v-slot:item.currency="{item}">
-              <router-link :to="{name: 'Token', params: {issue: item.currency + '@' + item.counterparty}}">{{item.currency}}</router-link>
-            </template>
+            <!-- <template v-slot:item.currency="{item}">
+              <router-link :to="{name: 'Token', params: {issuer: item.counterparty, currency: item.currency}}">{{item.currency}}</router-link>
+            </template> -->
             <template v-slot:item.counterparty="{item}">
               <router-link :to="{name: 'Account', params: {address: item.counterparty}}">{{item.counterparty}}</router-link>
             </template>
@@ -87,9 +87,9 @@
                   :disable-sort=true
                   class="smtable word-break"
           >
-            <template v-slot:item.specification.currency="{item}">
-              <router-link :to="{name: 'Token', params: {issue: item.specification.currency + '@' + address}}">{{item.specification.currency}}</router-link>
-            </template>
+            <!-- <template v-slot:item.specification.currency="{item}">
+              <router-link :to="{name: 'Token', params: {issuer: address, currency: item.specification.currency}}">{{item.specification.currency}}</router-link>
+            </template> -->
           </v-data-table>
         </v-tab-item>
         
@@ -102,9 +102,9 @@
                   :disable-sort=true
                   class="smtable word-break"
           >
-            <template v-slot:item.specification.currency="{item}">
-              <router-link :to="{name: 'Token', params: {issue: item.specification.currency + '@' + item.specification.counterparty}}">{{item.specification.currency}}</router-link>
-            </template>
+            <!-- <template v-slot:item.specification.currency="{item}">
+              <router-link :to="{name: 'Token', params: {issuer: item.specification.counterparty, currency: item.specification.currency}}">{{item.specification.currency}}</router-link>
+            </template> -->
             <template v-slot:item.specification.counterparty="{item}">
               <router-link :to="{name: 'Account', params: {address: item.specification.counterparty}}">{{item.specification.counterparty}}</router-link>
             </template>
@@ -274,17 +274,16 @@ import utils from '../api/utils'
         },
         loadMore() {
           if (this.tab === 0) {
-            return !!this.balances.marker;
+            this.getBalances();
           }
           else if (this.tab === 1) {
-            console.dir(this.transactions.marker)
-            return !!this.transactions.marker;
+            this.getTransactions();
           }
           else if (this.tab === 2) {
-            return !!this.issues.marker;
+            this.getIssues();
           }
           else if (this.tab === 3) {
-            return !!this.trustlines.marker;
+            this.getTrustlines();
           }
         }
     },
