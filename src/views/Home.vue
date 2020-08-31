@@ -43,7 +43,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr class="tab-tr row no-gutters" v-for="item in blocks" v-bind:key="item.ledgerVersion">
+            <tr class="tab-tr row no-gutters" v-for="(item,index) in blocks" v-bind:key="index">
               <td class="col-4">
                 <p class="text-no-wrap d-flex align-center">
                   <img class="flex-grow-0 flex-shrink-0 mr-2 " src="@/assets/3.png" width="16" height="16" alt="">

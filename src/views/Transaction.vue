@@ -5,12 +5,12 @@
                 <div class="type"><h2>{{tx.type}}</h2></div>
                 <div class="status">
                 </div>
-                <div class="hash text-overflow mt-5">{{tx.id}}
+                <div class="hash grey--text text-overflow mt-5">{{tx.id}}
                 </div>
             </div>
             <div class="dates text-no-wrap text-right col-md-2 col-sm-12">
-                <div>Ledger {{tx.outcome ? tx.outcome.ledgerVersion : ''}}</div>
-                <div class="time mt-5">
+                <div class="grey--text">Ledger {{tx.outcome ? tx.outcome.ledgerVersion : ''}}</div>
+                <div class="time mt-5 grey--text">
                     {{tx.outcome ? tx.outcome.timestamp : '' | dateFormat}}
                 </div>
             </div>
@@ -22,51 +22,109 @@
         <v-divider></v-divider>
         <v-simple-table class="table">
             <tbody>
+            <!-- common -->
             <tr>
                 <td>Account</td>
-                <td class="text-wrap word-break"><router-link :to="{name: 'Account', params: {address: tx.address}}">{{tx.address}}</router-link></td>
+                <td class="text-wrap word-break grey--text"><router-link :to="{name: 'Account', params: {address: tx.address}}">{{tx.address}}</router-link></td>
             </tr>
             <tr>
                 <td>Sequence</td>
-                <td>{{tx.sequence}}</td>
+                <td class="grey--text">{{tx.sequence | numberFormat}}</td>
             </tr>
             <tr>
                 <td>Fee</td>
-                <td>{{tx.outcome ? tx.outcome.fee : ''}} CALL</td>
+                <td class="grey--text">{{tx.outcome ? tx.outcome.fee : ''}} CALL</td>
             </tr>
-            <tr>
+            <!-- payment -->
+            <tr v-if="tx.type === 'payment'">
                 <td>Amount</td>
-                <td>{{}}</td>
+                <td class="grey--text">{{tx.specification ? tx.specification.source.maxAmount : '' | amountStr}}</td>
             </tr>
-            <tr>
-                <td>Description</td>
-                <td class="text-wrap word-break">{{tx | txDesc}}</td>
+            <tr v-if="tx.type === 'payment'">
+                <td>Destination</td>
+                <td class="grey--text"><router-link :to="{name: 'Account', params: {address: tx.specification.destination.address}}">{{tx.specification.destination.address}}</router-link></td>
             </tr>
+            <!-- offer -->
+            <tr v-if="tx.type === 'order'">
+                <td>Direction</td>
+                <td class="grey--text">{{tx.specification ? tx.specification.direction : ''}}</td>
+            </tr>
+            <tr v-if="tx.type === 'order'">
+                <td>Quantity</td>
+                <td class="grey--text">{{tx.specification ? tx.specification.quantity : '' | humanAmount}}</td>
+            </tr>
+            <tr v-if="tx.type === 'order'">
+                <td>TotalValue</td>
+                <td class="grey--text">{{tx.specification ? tx.specification.totalPrice : '' | humanAmount}}</td>
+            </tr>
+            <!-- offer cancel -->
+            <tr v-if="tx.type === 'orderCancellation'">
+                <td>Order Sequence</td>
+                <td class="grey--text">{{tx.specification ? tx.specification.orderSequence : '' | numberFormat}}</td>
+            </tr>
+            <!-- issue set -->
+            <tr v-if="tx.type === 'issueSet'">
+                <td>Currency</td>
+                <td class="grey--text">{{tx.specification ? tx.specification.currency : ''}}</td>
+            </tr>
+            <tr v-if="tx.type === 'issueSet'">
+                <td>Total</td>
+                <td class="grey--text">{{tx.specification ? tx.specification.total : '' | numberFormat}}</td>
+            </tr>
+            <tr v-if="tx.type === 'issueSet'">
+                <td>Additional</td>
+                <td class="grey--text">{{tx.specification ? tx.specification.additional : ''}}</td>
+            </tr>
+            <tr v-if="tx.type === 'issueSet'">
+                <td>NFT</td>
+                <td class="grey--text">{{tx.specification ? tx.specification.invoice : ''}}</td>
+            </tr>
+            <!-- trustlines -->
+            <tr v-if="tx.type === 'trustline'">
+                <td>Currency</td>
+                <td class="grey--text">{{tx.specification ? tx.specification.currency : ''}}</td>
+            </tr>
+            <tr v-if="tx.type === 'trustline'">
+                <td>Limit</td>
+                <td class="grey--text">{{tx.specification ? tx.specification.limit : ''}}</td>
+            </tr>
+            <tr v-if="tx.type === 'trustline'">
+                <td>Counterparty</td>
+                <td class="grey--text">
+                    <router-link :to="{name: 'Account', params: {address: tx.specification.counterparty}}">{{tx.specification.counterparty}}</router-link>
+                </td>
+            </tr>
+            <!-- settings -->
+
             </tbody>
         </v-simple-table>
         <div class="mt-4 mb-6">
             <p class="text-h6">Memos</p>
-            <p>发送此次交易消耗 0.000012XRP</p>
-            <p>接收 takerPays 此报价的汇率为 rate，pair</p>
+            <ul>
+                <li v-for="(item, index) in memos" v-bind:key="index" class="grey--text">{{item.data}}</li>
+            </ul>
         </div>
         <div class="Outcome">
             <div class=" d-flex justify-space-between">
-                <span class="text-h6">Outcome</span><span class="darken-green font-weight-bold">tesSUCCESS</span>
+                <span class="text-h6">Outcome</span><span class="green--text font-weight-bold">tesSUCCESS</span>
             </div>
             <v-divider class="mb-4"></v-divider>
-            <div class="mt-2 mb-3">
-                <p class="text-h7 font-weight-bold">Effects</p>
-                <p>{{tx | txDesc}}</p>
+            <div class="mt-2 mb-3" v-if="tx.outcome && tx.outcome.deliveredAmount ? true : false">
+                <p class="text-h7 font-weight-bold">Delivered Amount</p>
+                <p class="grey--text">
+                    {{tx.outcome.deliveredAmount.value}} {{tx.outcome.deliveredAmount.currency}}
+                    <span v-if="tx.outcome.deliveredAmount.counterparty">
+                        @<router-link :to="{name: 'Account', params: {address: tx.outcome.deliveredAmount.counterparty}}">{{tx.outcome.deliveredAmount.counterparty}}</router-link>
+                    </span>
+                </p>
             </div>
-            <div class="mt-2 mb-3">
+            <div class="mt-2 mb-3" v-if="tx.outcome && tx.outcome.balanceChanges ? true : false">
                 <p class="text-h7 font-weight-bold">Balance Change</p>
-                <p>+100,000 CALL</p>
-                <p>-100 CNY@rEb8TK3gBgk5auZkwc6sHnwrGVJH8DuaLh</p>
+                <BalanceChange :changes="tx.outcome.balanceChanges" :address="tx.address"></BalanceChange>
             </div>
-            <div class="mt-2 mb-3">
+            <div class="mt-2 mb-3" v-if="tx.outcome && tx.outcome.orderbookChanges ? true: false">
                 <p class="text-h7 font-weight-bold">Orderbook Changes</p>
-                <p>+100,000 CALL</p>
-                <p>-100 CNY@rEb8TK3gBgk5auZkwc6sHnwrGVJH8DuaLh</p>
+                <OrderbookChange :changes="tx.outcome.orderbookChanges" :address="tx.address"></OrderbookChange>
             </div>
         </div>
     </v-container>
@@ -74,10 +132,15 @@
 <script>
 
 import CheckNetwork from '../api/network'
+import utils from '../api/utils';
+import OrderbookChange from '../components/OrderbookChange'
+import BalanceChange from '../components/BalanceChange'
 
 export default {
     name: 'Block',
-    components: {},
+    components: {
+        OrderbookChange, BalanceChange
+    },
     data: () => ({
         hash: '',
         tx: {}
@@ -85,28 +148,46 @@ export default {
     methods: {
         goHome() {
             this.$router.push('/');
+        },
+        async fetchData() {
+            var h = this.$route.params.hash;
+            this.hash = h;
+
+            if (!utils.isValidHash(h)) {
+                 this.$toast.error("Invalid transaction hash: " + h);
+                this.goHome();
+                return;
+            }
+            
+            // check network status
+            var status = await CheckNetwork();
+            if (!status) {
+                this.$toast.error("fail to connect callchain");
+                return;
+            }
+
+            var api = this.$store.state.api;
+            try {
+                this.tx = await api.getTransaction(h);
+                console.dir(this.tx);
+            } catch (e) {
+                console.dir(e);
+                this.$toast.error(e.message || e);
+                this.goHome();
+                return;
+            }
         }
     },
-    async created() {
-        var h = this.$route.params.hash;
-        this.hash = h;
-        
-        // check network status
-        var status = await CheckNetwork();
-        if (!status) {
-            this.$toast.error("fail to connect callchain");
-            return;
+    computed: {
+        memos() {
+            if (this.tx.specification) {
+                return this.tx.specification.memos || []
+            }
+            return [];
         }
-
-        var api = this.$store.state.api;
-        try {
-            this.tx = await api.getTransaction(h);
-            console.dir(this.tx);
-        } catch (e) {
-            console.dir(e);
-            this.goHome();
-            return;
-        }
+    },
+    created() {
+        this.fetchData();    
     }
 }
 

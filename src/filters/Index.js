@@ -41,24 +41,11 @@ const humanDate = (timestamp) => {
     }
 }
 
-import Parser from '../api/transaction-parser';
-
-const txDesc = (tx, address) => {
-    var type = tx.type;
-    var parser = Parser[type] ? Parser[type] : Parser['default'];
-    return parser(tx, address);
-}
-
-const blockHashLimit = (value) => {
-  var s = value + '';
-  return s.substring(0, 32) + '...';
-}
-
 import utils from '../api/utils'
 
+// for tx
 const txHumanAmount = (item) => {
   var tx = item.transaction;
-  console.dir(tx);
   switch(tx.TransactionType)
   {
     case 'Payment':
@@ -82,12 +69,47 @@ const callDateToTimestamp = (longs) => {
   return dateFormatLib(d, "yyyy-mm-dd HH:MM:ss")
 }
 
+const invoceFeature = (spec) => {
+  var ret = '';
+  if (spec.additional) {
+    ret += 'Additional';
+  }
+  if (spec.invoice) {
+    if (ret.length == 0) {
+      ret = 'Invoice';
+    } else {
+      ret += '/Invoice';
+    }
+  }
+  if (ret.length != 0) return ret;
+  return 'Standard';
+}
+
+const amountStr = (v) => {
+  if (!v) return '';
+
+  if (typeof v === 'string') {
+    return (parseInt(v) / 1000000).toFixed(6) + ' CALL';
+  }
+  return v.value + ' ' + v.currency + '@' + (v.counterparty || v.issuer);
+}
+
+// for amount
+const humanAmount = (v) => {
+  if (!v) return '';
+  if (typeof v === 'string') {
+    return (parseInt(v) / 1000000).toFixed(6) + ' CALL';
+  }
+  return v.value + ' ' + v.currency;
+}
+
 export {
     numberFormat,
     humanDate,
     dateFormat,
-    txDesc,
-    blockHashLimit,
     txHumanAmount,
-    callDateToTimestamp
+    humanAmount,
+    callDateToTimestamp,
+    invoceFeature,
+    amountStr
 }

@@ -102,8 +102,6 @@ function processTrustline(tx, address) {
         return result;
     }
 
-    if (spec.counterparty !== address) return 'Passive trust transaction';
-
     result = 'You have been trust by ' + tx.address + ' for ' + spec.limit + ' ' + spec.currency;
     return result;
 }

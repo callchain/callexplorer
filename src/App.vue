@@ -12,13 +12,14 @@
       <div class="d-flex align-center pr-4">
         <div style="height: 40px;">
           <v-text-field
-            placeholder="account address or transaction hash"
+            placeholder="ledger version, account address or transaction hash"
             single-line
             dense
             width="800"
             height="40"
             color="#ced4da"
             class="center search-input"
+            v-model="content"
           ></v-text-field>
         </div>
         <v-btn
@@ -26,6 +27,7 @@
           color="#c91c46"
           height="35"
           class="ml-3 white--text"
+          @click="search()"
         >
           <span>Search</span>
         </v-btn>
@@ -42,6 +44,8 @@
 
 <script>
 
+import utils from './api/utils';
+
 export default {
   name: 'App',
 
@@ -49,8 +53,30 @@ export default {
   },
 
   data: () => ({
-    //
+    content: ''
   }),
+  methods: {
+    search() {
+      if (typeof this.content !== 'string') return;
+      if (this.content.length === 0) return;
+
+      if (!isNaN(Number(this.content))) {
+        // go to block
+        this.$router.push({name: 'Block', params: {height: Number(this.content)}});
+      }
+      else if (utils.isValidAddr(this.content)) {
+        // go to account
+        this.$router.push({name: 'Account', params: {address: this.content}});
+      }
+      else if (utils.isValidHash(this.content)) {
+        // go to transaction
+        this.$router.push({name: 'Transaction', params: {hash: this.content}});
+      }
+      else {
+        this.$toast.error("Unknown search content: " + this.content);
+      }
+    }
+  },
   created() {
     if (sessionStorage.getItem("call-state") ) {
         // restore state data

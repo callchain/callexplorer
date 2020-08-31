@@ -131,6 +131,7 @@ import CheckNetwork from '../api/network'
         async fetchData() {
             var h = this.$route.params.height;
             if (isNaN(Number(h))) {
+                this.$toast.error("Invalid ledger version: " + h);
                 this.goHome();
                 return;
             }
