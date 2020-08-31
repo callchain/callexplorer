@@ -39,8 +39,8 @@
                 <td>{{}}</td>
             </tr>
             <tr>
-                <td>Destination</td>
-                <td class="text-wrap word-break">TODO</td>
+                <td>Description</td>
+                <td class="text-wrap word-break">{{tx | txDesc}}</td>
             </tr>
             </tbody>
         </v-simple-table>
@@ -145,7 +145,7 @@ export default {
     }
 
     .table {
-        width: 50%;
+        width: 60%;
         border-bottom: 1px solid rgba(0, 0, 0, 0.12);
         td {
             font-size: 14px !important;

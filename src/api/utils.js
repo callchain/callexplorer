@@ -22,6 +22,13 @@ function toDrops(v) {
     return (Number(v) * 1000000)
 }
 
+function toAmount(v) {
+    if (typeof v === 'string') {
+        return (parseInt(v) / 1000000).toFixed(6) + ' CALL';
+    }
+    return v.value + ' ' + v.currency
+}
+
 export default {
-    isValidAddr, isValidSec, isValidDomain, isValidPort, toDrops
+    isValidAddr, isValidSec, isValidDomain, isValidPort, toDrops, toAmount
 }

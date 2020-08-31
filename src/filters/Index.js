@@ -54,20 +54,23 @@ const blockHashLimit = (value) => {
   return s.substring(0, 32) + '...';
 }
 
+import utils from '../api/utils'
+
 const txHumanAmount = (item) => {
   var tx = item.transaction;
+  console.dir(tx);
   switch(tx.TransactionType)
   {
     case 'Payment':
-      return 'P CALL';
+      return utils.toAmount(tx.Amount);
     case 'OfferCreate': 
-      return 'C CALL';
+      return utils.toAmount(tx.TakerPays) + '->' + utils.toAmount(tx.TakerGets)
     case 'IssueSet':
-      return 'I CALL';
+      return utils.toAmount(tx.Total);
     case 'Settings':
-      return 'S CALL';
+      return '0 CALL';
     case 'OfferCancellation':
-      return 'A CALL';
+      return '0 CALL';
     default:
       return '0 CALL';
   }
