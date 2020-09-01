@@ -27,6 +27,7 @@
           <v-data-table
                   :headers="balances.theadData"
                   :items="balances.data"
+                  :items-per-page="balances.data.length"
                   hide-default-footer
                   :disable-sort=true
                   class="smtable word-break"
@@ -90,6 +91,7 @@
           <v-data-table
                   :headers="issues.theadData"
                   :items="issues.data"
+                  :items-per-page="issues.data.length"
                   hide-default-footer
                   :disable-sort=true
                   class="smtable word-break"
@@ -117,6 +119,7 @@
           <v-data-table
                   :headers="trustlines.theadData"
                   :items="trustlines.data"
+                  :items-per-page="trustlines.data.length"
                   hide-default-footer
                   :disable-sort=true
                   class="smtable word-break"
@@ -324,7 +327,6 @@ const MORE_FLAG = 2;
             var txns = await api.getTransactions(this.address, {limit: 10, marker: this.transactions.marker});
             this.transactions.data.splice(this.transactions.data.length, 0, ...txns.results);
             this.transactions.marker = txns.marker;
-            console.dir(this.transactions.data);
           } catch (e) {
             console.dir(e);
             this.goHome();
