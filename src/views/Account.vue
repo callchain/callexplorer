@@ -49,6 +49,7 @@
           <v-data-table
             :headers="transactions.theadData"
             :items="transactions.data"
+            :items-per-page="transactions.data.length"
             hide-default-footer
             class="smtable word-break"
             :disable-sort=true
