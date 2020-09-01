@@ -4,7 +4,7 @@
             <div class="ledger-nav d-flex justify-space-between">
                 
                     <div class="previous d-inline-flex align-center">
-                        <v-img
+                        <img
                                 src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAcCAYAAABoMT8aAAAACXBIWXMAABYlAAAWJQFJUiTwAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAADsSURBVHgBpdUxDoIwFAbg97cX8AIaF3dnXZgMIzcAj+DoxhG8gRzD0clZdweMiyM3eBYSDQLF1/YNpLzm/9KSlIIcax1tUgIdiFARI4d7GEWrVamAcAOIVmAJEzO2f4Gx8OV8KhASrscICVsBaXgQcAn3ANfwD+AT/gK+4QYICdelGMh9ww0A4km3afbFJCzFrHa9LrhYR3FKgtLP8n6dzhcPgJLOMpLZfFGa+dsoUD9CEP0Z+CK6/eKD6G7DFekBrsgg4IJYASki+qmuojgD+NibYGTie8GCVFoKWLbzEgNtxHyDpTmE5tSq/Rs7UsE7QglKTAAAAABJRU5ErkJggg=="
                                 alt=""
                                 width="6"
@@ -15,13 +15,13 @@
                         {{height - 1}}
                         </router-link>
                     </div>
-                
+
                 
                     <div class="next d-inline-flex align-center">
                         <router-link :to="{name: 'Block', params: {height: height + 1}}">
                         {{height + 1}}
                         </router-link>
-                        <v-img
+                        <img
                                 src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAcCAYAAABoMT8aAAAACXBIWXMAABYlAAAWJQFJUiTwAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAADySURBVHgBpdW9EYJAEAXgfdCADeiQ0IQkRA4hHYAl2AEl2IHYBSGJxpob4NgAFbgeoI78entswCx787655Gbh+ZuIQHsilMRITnl2JEFZDCQqvFC9Q+DU84NIBIB40ZoIEYvZ2vWmAsR+FLfL0nHvAIVthMKV4xbq/DoJVJ85iP1pTBH798cEsbsDKdIDpMggIEFGAV0EpFFrP4gBPvQOGLEWMIGUFmkW6MkD41LrBs2TR9qdM2P7F5gKn/MsxZxw1WNOeBTQDQ8CknAPkIZbgEn4C5iGa2BOuKr3XjAL10B3L0jCzQ3UXlCvpFDRUhqu6gU1EMtbrTCbnAAAAABJRU5ErkJggg=="
                                 alt=""
                                 width="6"

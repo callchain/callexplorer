@@ -8,7 +8,7 @@
         <span class="mt-2 mb-2 font-32">{{info.callBalance | numberFormat}}</span>
         <span class="green--text">{{info.code ? 'Contract Code' : 'Normal Account'}}</span>
       </div>
-      <div class="d-inline-flex flex-column font-weight text-right">
+      <div class="d-inline-flex flex-column font-weight text-right rft">
         <span class="font-weight-bold">Account Info</span>
         <span class="mt-2 mb-2">RESERVE: <span>{{reservedCALL}}</span></span>
         <span>Sequence: <span>{{info.sequence | numberFormat}}</span></span>
@@ -475,6 +475,14 @@ const MORE_FLAG = 2;
       }
       #table-md {
         display: none;
+      }
+      .cost {
+        flex-direction: column;
+        justify-content: flex-start!important;
+        .rft {
+          margin-top: 30px;
+          text-align: left!important;
+        }
       }
     }
   }

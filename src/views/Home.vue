@@ -31,7 +31,7 @@
       </v-col>
     </v-row>
     <v-row class="cont-banner">
-      <v-col md=6 sm=12>
+      <v-col md=6 cols=12>
         <v-simple-table class="table tb-lft" >
           <template v-slot:default>
             <thead>
@@ -44,7 +44,7 @@
             </thead>
             <tbody>
             <tr class="tab-tr row no-gutters" v-for="(item,index) in blocks" v-bind:key="index">
-              <td class="col-4">
+              <td class="col-6 col-md-4">
                 <p class="text-no-wrap d-flex align-center">
                   <img class="flex-grow-0 flex-shrink-0 mr-2 " src="@/assets/3.png" width="16" height="16" alt="">
                   <span>{{item.ledgerVersion | numberFormat}}</span>
@@ -54,16 +54,16 @@
                   <span>{{item.ledgerTimestamp | dateFormat}}</span>
                 </p>
               </td>
-              <td class="col-8">
+              <td class="col-6 col-md-8 sm-text-right">
                 <router-link :to="{name: 'Block', params: {height: item.ledgerVersion}}" class="word-break d-block mb-2 text-overflow">{{item.ledgerHash}}</router-link>
-                <div class="text-md-left text-sm-right">{{item.transactionCount}} txns</div>
+                <div class="text-md-left">{{item.transactionCount}} txns</div>
               </td>
             </tr>
             </tbody>
           </template>
         </v-simple-table>
       </v-col>
-      <v-col md=6 sm=12>
+      <v-col cols="12" md=6>
         <v-simple-table class="table">
           <thead>
           <tr class="row no-gutters">
@@ -75,13 +75,13 @@
           </tr>
           </thead>
           <tbody>
-          <tr class="tab-td row no-gutters" v-for="item in transactions" v-bind:key="item.hash">
-            <td class="col-8">
+          <tr class="row no-gutters" v-for="item in transactions" v-bind:key="item.hash">
+            <td class="col-6 col-md-8">
               <router-link :to="{name: 'Transaction', params: {hash: item.transaction.hash}}" class="d-block font-weight-bold mb-2 text-overflow">{{item.transaction.hash}}</router-link>
               <router-link :to="{name: 'Account', params: {address: item.transaction.Account}}" class="d-block mb-2 text-overflow">{{item.transaction.Account}}</router-link>
               <p class="font-weight-bold">{{item.transaction.TransactionType}}</p>
             </td>
-            <td class="col-4 text-no-wrap">
+            <td class="col-6 col-md-4">
               <p class="text-right">{{item.transaction.date | callDateToTimestamp}}</p>
               <p class="text-right">{{item | txHumanAmount}}</p>
             </td>
@@ -199,8 +199,28 @@ export default {
     max-width: 300px;
   }
 
-  @media screen and (max-width: 1000px) {
-
+  @media screen and (max-width: 600px) {
+    .cont-banner {
+      margin: 0;
+      & > .col,
+      & > [class*=col-] {
+        padding: 0;
+      }
+    }
+    .table {
+      tbody td {
+        font-size: 12px!important;
+      }
+    }
+    .text-overflow {
+      max-width: 150px;
+    }
+    .sm-text-right {
+      text-align: right;
+      a {
+        margin-left: auto;
+      }
+    }
   }
 
 </style>

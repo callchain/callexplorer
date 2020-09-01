@@ -25,7 +25,7 @@
             <!-- common -->
             <tr>
                 <td>Account</td>
-                <td class="text-wrap word-break grey--text"><router-link :to="{name: 'Account', params: {address: tx.address}}">{{tx.address}}</router-link></td>
+                <td class="grey--text word-break"><router-link class="" :to="{name: 'Account', params: {address: tx.address}}">{{tx.address}}</router-link></td>
             </tr>
             <tr>
                 <td>Sequence</td>
@@ -38,7 +38,7 @@
             <!-- payment -->
             <tr v-if="tx.type === 'payment'">
                 <td>Amount</td>
-                <td class="grey--text">
+                <td class="grey--text word-break">
                     <span v-if="!!tx.specification">
                         {{tx.specification.destination.amount.value}} {{tx.specification.destination.amount.currency}}@<router-link :to="{name: 'Account', params: {address: tx.specification.destination.amount.counterparty}}">{{tx.specification.destination.amount.counterparty}}</router-link>
                     </span>
@@ -46,7 +46,7 @@
             </tr>
             <tr v-if="tx.type === 'payment'">
                 <td>Destination</td>
-                <td class="grey--text"><router-link :to="{name: 'Account', params: {address: tx.specification.destination.address}}">{{tx.specification.destination.address}}</router-link></td>
+                <td class="grey--text word-break"><router-link :to="{name: 'Account', params: {address: tx.specification.destination.address}}">{{tx.specification.destination.address}}</router-link></td>
             </tr>
             <!-- offer -->
             <tr v-if="tx.type === 'order'">
@@ -119,7 +119,7 @@
                 <p class="text-h7 font-weight-bold">Delivered Amount</p>
                 <p class="grey--text">
                     {{tx.outcome.deliveredAmount.value}} {{tx.outcome.deliveredAmount.currency}}
-                    <span v-if="tx.outcome.deliveredAmount.counterparty">
+                    <span v-if="tx.outcome.deliveredAmount.counterparty" class="word-break">
                         @<router-link :to="{name: 'Account', params: {address: tx.outcome.deliveredAmount.counterparty}}">{{tx.outcome.deliveredAmount.counterparty}}</router-link>
                     </span>
                 </p>
@@ -241,9 +241,14 @@ export default {
             }
         }
     }
-    @media screen and (max-width: 1000px) {
+    @media screen and (max-width: 600px) {
         .table {
             width: 100%;
+            td {
+                height: auto!important;
+                padding-top: 15px!important;
+                padding-bottom: 15px!important;
+            }
         }
     }
 </style>
