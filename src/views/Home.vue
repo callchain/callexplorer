@@ -2,32 +2,40 @@
   <div class="home">
     <v-row class="index-main row">
       <v-col cols="12" lg="3" sm="12" xs="12">
-        <v-card class="coins-top elevation-3" outlined>
+        <v-hover v-slot:default="{ hover }">
+        <v-card class="coins-top" :elevation="hover ? 6 : 2" outlined>
           <p>{{status.feePool}}</p>
           <p>Fee Pool</p>
           <img src="@/assets/6.png" alt="">
         </v-card>
+        </v-hover>
       </v-col>
       <v-col cols="12" lg="3" sm="12" xs="12">
-        <v-card class="coins-top elevation-3" outlined style="border-color:#5C9BD1;">
+        <v-hover v-slot:default="{ hover }">
+        <v-card class="coins-top" :elevation="hover ? 6 : 2" outlined style="border-color:#5C9BD1;">
           <p style="color:#5C9BD1;">{{status.reserveBaseCALL}}</p>
           <p>Reserved CALL</p>
           <img src="@/assets/5.png" alt="">
         </v-card>
+        </v-hover>
       </v-col>
       <v-col cols="12" lg="3" sm="12" xs="12">
-        <v-card class="coins-top elevation-3" outlined style="border-color:#F36A5A;">
+        <v-hover v-slot:default="{ hover }">
+        <v-card class="coins-top" :elevation="hover ? 6 : 2" outlined style="border-color:#F36A5A;">
           <p style="color:#F36A5A;" class="ng-binding">{{status.reserveIncrementCALL}}</p>
           <p>Increment Reserve</p>
           <img src="@/assets/8.png" alt="">
         </v-card>
+        </v-hover>
       </v-col>
       <v-col cols="12" lg="3" sm="12" xs="12">
-        <v-card class="coins-top elevation-3" outlined style="border-color:#5C9BD1;" >
+        <v-hover v-slot:default="{ hover }">
+        <v-card class="coins-top" :elevation="hover ? 6 : 2" outlined style="border-color:#5C9BD1;" >
           <p style="color:#5C9BD1;">{{status.baseFeeCALL}}</p>
           <p>Base Fee</p>
           <img src="@/assets/7.png" alt="">
         </v-card>
+        </v-hover>
       </v-col>
     </v-row>
     <v-row class="cont-banner">
