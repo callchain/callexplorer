@@ -40,7 +40,11 @@
                 <td>Amount</td>
                 <td class="grey--text word-break">
                     <span v-if="!!tx.specification">
-                        {{tx.specification.destination.amount.value}} {{tx.specification.destination.amount.currency}}@<router-link :to="{name: 'Account', params: {address: tx.specification.destination.amount.counterparty}}">{{tx.specification.destination.amount.counterparty}}</router-link>
+                        {{tx.specification.destination.amount.value}} {{tx.specification.destination.amount.currency}}
+                        <span v-if="!!tx.specification.destination.amount.counterparty">
+                            @
+                            <router-link :to="{name: 'Account', params: {address: tx.specification.destination.amount.counterparty}}">{{tx.specification.destination.amount.counterparty}}</router-link>
+                        </span>
                     </span>
                 </td>
             </tr>
@@ -112,7 +116,11 @@
         </div>
         <div class="Outcome">
             <div class=" d-flex justify-space-between">
-                <span class="text-h6">Outcome</span><span class="green--text font-weight-bold">tesSUCCESS</span>
+                <span class="text-h6">Outcome</span>
+                <span class="green--text font-weight-bold" v-if="isSuccess">tesSUCCESS</span>
+                <span class="red--text font-weight-bold" v-else>
+                    {{tx.outcome ? tx.outcome.result : ''}}
+                </span>
             </div>
             <v-divider class="mb-4"></v-divider>
             <div class="mt-2 mb-3" v-if="tx.outcome && tx.outcome.deliveredAmount ? true : false">
@@ -190,6 +198,12 @@ export default {
                 return this.tx.specification.memos || []
             }
             return [];
+        },
+        isSuccess() {
+            if (this.tx.outcome) {
+                return this.tx.outcome.result === 'tesSUCCESS';
+            }
+            return false;
         }
     },
     created() {

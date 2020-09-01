@@ -48,7 +48,7 @@
           <!--针对手机端表格-->
           <v-data-table
             :headers="transactions.theadData"
-            :items="transactionData"
+            :items="transactions.data"
             hide-default-footer
             class="smtable word-break"
             :disable-sort=true
@@ -68,11 +68,11 @@
           <v-simple-table id="table-md" class="mtable">
             <thead>
             <tr class="row no-gutters">
-              <th :class="`col-${item.col}`" v-for="(item, idx) in transactions.theadData.slice(0,4)" :key="idx" id="t_header">{{item.text}}</th>
+              <th :class="`col-${item.col}`" v-for="(item, index) in transactions.theadData.slice(0,4)" v-bind:key="index" id="t_header">{{item.text}}</th>
             </tr>
             </thead>
             <tbody>
-            <tr class="row no-gutters" v-for="tx in transactions.data" :key="tx.id">
+            <tr class="row no-gutters" v-for="(tx,index) in transactions.data" v-bind:key="index">
               <td class="col-3 font-weight-bold">{{tx.type}}</td>
               <td class="col-4 text-overflow"><router-link :to="{name: 'Account', params: {address: tx.address}}">{{tx.address}}</router-link></td>
               <td class="col-2">{{tx.sequence | numberFormat}}</td>
@@ -307,7 +307,7 @@ const MORE_FLAG = 2;
           var api = this.$store.state.api;
           try {
             var sheet = await api.getBalanceSheet(this.address);
-            this.balances.data = this.balances.data.concat(sheet.assets || []);
+            this.balances.data.splice(this.balances.data.length, 0, ...(sheet.assets || []));
             this.balances.marker = sheet.marker;
           } catch (e) {
             console.dir(e);
@@ -321,7 +321,7 @@ const MORE_FLAG = 2;
           var api = this.$store.state.api;
           try {
             var txns = await api.getTransactions(this.address, {limit: 10, marker: this.transactions.marker});
-            this.transactions.data = this.transactions.data.concat(txns.results);
+            this.transactions.data.splice(this.transactions.data.length, 0, ...txns.results);
             this.transactions.marker = txns.marker;
             console.dir(this.transactions.data);
           } catch (e) {
@@ -336,7 +336,7 @@ const MORE_FLAG = 2;
           var api = this.$store.state.api;
           try {
             var list = await api.getAccountIssues(this.address);
-            this.issues.data = this.issues.data.concat(list.results);
+            this.issues.data.splice(this.issues.data.length, 0, ...list.results);
             this.issues.marker = list.marker;
           } catch (e) {
             console.dir(e);
@@ -350,7 +350,7 @@ const MORE_FLAG = 2;
           var api = this.$store.state.api;
           try {
             var list = await api.getTrustlines(this.address, {limit: 10});
-            this.trustlines.data = this.trustlines.data.concat(list.results);
+            this.trustlines.data.splice(this.trustlines.data.length, 0, ...list.results);
             this.trustlines.marker = list.marker;
           } catch (e) {
             console.dir(e);
@@ -384,7 +384,6 @@ const MORE_FLAG = 2;
           this.initData();
           try {
             this.info = await api.getAccountInfo(this.address);
-            console.dir(this.info);
             var func = this.funcMap(this.tab);
             if (func) {
               func(FIRST_FLAG);
@@ -407,9 +406,6 @@ const MORE_FLAG = 2;
       showMore() {
         var data = this.dataMap(this.tab);
         return data && !!data.marker;
-      },
-      transactionData() {
-        return this.transactions.data;
       }
     },
     created() {      
