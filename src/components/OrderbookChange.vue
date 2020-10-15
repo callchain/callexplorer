@@ -26,7 +26,7 @@
                 </span>
                 <span v-else-if="item.change.status === 'cancelled'">
                     You cancelled to {{item.change.direction}} {{item.change.quantity.value}} {{item.change.quantity.currency}}
-                    at price {{item.change.makerExchangeRate}} for offer sequence {{item.change.sequence | numberFormat }}
+                    at price {{item.change.makerExchangeRate}} with offer sequence {{item.change.sequence | numberFormat }}
                 </span>
             </li>
         </ul>

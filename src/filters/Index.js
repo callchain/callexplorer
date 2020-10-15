@@ -63,9 +63,31 @@ const txHumanAmount = (item) => {
   }
 }
 
+// for getTransaction tx
+const toHumanTx = (tx) => {
+  switch(tx.type)
+  {
+    case 'payment':
+      return utils.toAmount(tx.outcome.deliveredAmount);
+    case 'order':
+      return utils.toAmount(tx.specification.quantity) + '->' + utils.toAmount(tx.specification.totalPrice);
+    case 'settings':
+      break;
+    case 'issueSet':
+      return tx.specification.total + ' ' + tx.specification.currency;
+    default:
+        return '0 CALL';
+  }
+}
+
 const callDateToTimestamp = (longs) => {
   var l = Number(longs) + 946656000;
   var d = new Date(l * 1000);
+  return dateFormatLib(d, "yyyy-mm-dd HH:MM:ss")
+}
+
+const toTimestamp = (item) => {
+  var d = new Date(item);
   return dateFormatLib(d, "yyyy-mm-dd HH:MM:ss")
 }
 
@@ -110,6 +132,8 @@ export {
     txHumanAmount,
     humanAmount,
     callDateToTimestamp,
+    toTimestamp,
     invoceFeature,
-    amountStr
+    amountStr,
+    toHumanTx
 }

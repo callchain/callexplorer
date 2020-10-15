@@ -9,8 +9,12 @@
                 </div>
             </div>
             <div class="dates text-no-wrap text-md-right text-sm-left col-md-2 col-sm-12 mt-4">
-                <div class="grey--text">Ledger {{tx.outcome ? tx.outcome.ledgerVersion : ''}}</div>
-                <div class="time mt-3 grey--text">
+                <div class="">Ledger 
+                    <router-link :to="{name: 'Block', params: {height: Number(tx.outcome.ledgerVersion)}}">
+                        {{tx.outcome ? tx.outcome.ledgerVersion : ''}}
+                    </router-link>
+                    </div>
+                <div class="time mt-3">
                     {{tx.outcome ? tx.outcome.timestamp : '' | dateFormat}}
                 </div>
             </div>
@@ -25,20 +29,20 @@
             <!-- common -->
             <tr>
                 <td>Account</td>
-                <td class="grey--text word-break"><router-link class="" :to="{name: 'Account', params: {address: tx.address}}">{{tx.address}}</router-link></td>
+                <td class="word-break"><router-link class="" :to="{name: 'Account', params: {address: tx.address}}">{{tx.address}}</router-link></td>
             </tr>
             <tr>
                 <td>Sequence</td>
-                <td class="grey--text">{{tx.sequence | numberFormat}}</td>
+                <td class="">{{tx.sequence | numberFormat}}</td>
             </tr>
             <tr>
                 <td>Fee</td>
-                <td class="grey--text">{{tx.outcome ? tx.outcome.fee : ''}} CALL</td>
+                <td class="">{{tx.outcome ? tx.outcome.fee : ''}} CALL</td>
             </tr>
             <!-- payment -->
             <tr v-if="tx.type === 'payment'">
                 <td>Amount</td>
-                <td class="grey--text word-break">
+                <td class="word-break">
                     <span v-if="!!tx.specification">
                         {{tx.specification.destination.amount.value}} {{tx.specification.destination.amount.currency}}
                         <span v-if="!!tx.specification.destination.amount.counterparty">
@@ -50,55 +54,55 @@
             </tr>
             <tr v-if="tx.type === 'payment'">
                 <td>Destination</td>
-                <td class="grey--text word-break"><router-link :to="{name: 'Account', params: {address: tx.specification.destination.address}}">{{tx.specification.destination.address}}</router-link></td>
+                <td class="word-break"><router-link :to="{name: 'Account', params: {address: tx.specification.destination.address}}">{{tx.specification.destination.address}}</router-link></td>
             </tr>
             <!-- offer -->
             <tr v-if="tx.type === 'order'">
                 <td>Direction</td>
-                <td class="grey--text">{{tx.specification ? tx.specification.direction : ''}}</td>
+                <td class="">{{tx.specification ? tx.specification.direction : ''}}</td>
             </tr>
             <tr v-if="tx.type === 'order'">
                 <td>Quantity</td>
-                <td class="grey--text">{{tx.specification ? tx.specification.quantity : '' | humanAmount}}</td>
+                <td class="">{{tx.specification ? tx.specification.quantity : '' | humanAmount}}</td>
             </tr>
             <tr v-if="tx.type === 'order'">
                 <td>TotalValue</td>
-                <td class="grey--text">{{tx.specification ? tx.specification.totalPrice : '' | humanAmount}}</td>
+                <td class="">{{tx.specification ? tx.specification.totalPrice : '' | humanAmount}}</td>
             </tr>
             <!-- offer cancel -->
             <tr v-if="tx.type === 'orderCancellation'">
                 <td>Order Sequence</td>
-                <td class="grey--text">{{tx.specification ? tx.specification.orderSequence : '' | numberFormat}}</td>
+                <td class="">{{tx.specification ? tx.specification.orderSequence : '' | numberFormat}}</td>
             </tr>
             <!-- issue set -->
             <tr v-if="tx.type === 'issueSet'">
                 <td>Currency</td>
-                <td class="grey--text">{{tx.specification ? tx.specification.currency : ''}}</td>
+                <td class="">{{tx.specification ? tx.specification.currency : ''}}</td>
             </tr>
             <tr v-if="tx.type === 'issueSet'">
                 <td>Total</td>
-                <td class="grey--text">{{tx.specification ? tx.specification.total : '' | numberFormat}}</td>
+                <td class="">{{tx.specification ? tx.specification.total : '' | numberFormat}}</td>
             </tr>
             <tr v-if="tx.type === 'issueSet'">
                 <td>Additional</td>
-                <td class="grey--text">{{tx.specification ? tx.specification.additional : ''}}</td>
+                <td class="">{{tx.specification ? tx.specification.additional : ''}}</td>
             </tr>
             <tr v-if="tx.type === 'issueSet'">
                 <td>NFT</td>
-                <td class="grey--text">{{tx.specification ? tx.specification.invoice : ''}}</td>
+                <td class="">{{tx.specification ? tx.specification.invoice : ''}}</td>
             </tr>
             <!-- trustlines -->
             <tr v-if="tx.type === 'trustline'">
                 <td>Currency</td>
-                <td class="grey--text">{{tx.specification ? tx.specification.currency : ''}}</td>
+                <td class="">{{tx.specification ? tx.specification.currency : ''}}</td>
             </tr>
             <tr v-if="tx.type === 'trustline'">
                 <td>Limit</td>
-                <td class="grey--text">{{tx.specification ? tx.specification.limit : ''}}</td>
+                <td class="">{{tx.specification ? tx.specification.limit : ''}}</td>
             </tr>
             <tr v-if="tx.type === 'trustline'">
                 <td>Counterparty</td>
-                <td class="grey--text">
+                <td class="">
                     <router-link :to="{name: 'Account', params: {address: tx.specification.counterparty}}">
                         {{tx.specification.counterparty}}
                     </router-link>
@@ -111,7 +115,7 @@
         <div class="mt-4 mb-6">
             <p class="text-h6">Memos</p>
             <ul>
-                <li v-for="(item, index) in memos" v-bind:key="index" class="grey--text">{{item.data}}</li>
+                <li v-for="(item, index) in memos" v-bind:key="index" class="">{{item.data}}</li>
             </ul>
         </div>
         <div class="Outcome">
@@ -125,7 +129,7 @@
             <v-divider class="mb-4"></v-divider>
             <div class="mt-2 mb-3" v-if="tx.outcome && tx.outcome.deliveredAmount ? true : false">
                 <p class="text-h7 font-weight-bold">Delivered Amount</p>
-                <p class="grey--text">
+                <p class="">
                     {{tx.outcome.deliveredAmount.value}} {{tx.outcome.deliveredAmount.currency}}
                     <span v-if="tx.outcome.deliveredAmount.counterparty" class="word-break">
                         @<router-link :to="{name: 'Account', params: {address: tx.outcome.deliveredAmount.counterparty}}">{{tx.outcome.deliveredAmount.counterparty}}</router-link>

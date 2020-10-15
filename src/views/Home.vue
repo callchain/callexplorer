@@ -83,15 +83,15 @@
           </tr>
           </thead>
           <tbody>
-          <tr class="row no-gutters" v-for="item in transactions" v-bind:key="item.hash">
+          <tr class="row no-gutters" v-for="item in transactions" v-bind:key="item.id">
             <td class="col-6 col-md-8">
-              <router-link :to="{name: 'Transaction', params: {hash: item.transaction.hash}}" class="d-block font-weight-bold mb-2 text-overflow">{{item.transaction.hash}}</router-link>
-              <router-link :to="{name: 'Account', params: {address: item.transaction.Account}}" class="d-block mb-2 text-overflow">{{item.transaction.Account}}</router-link>
-              <p class="font-weight-bold">{{item.transaction.TransactionType}}</p>
+              <router-link :to="{name: 'Transaction', params: {hash: item.id}}" class="d-block font-weight-bold mb-2 text-overflow">{{item.id}}</router-link>
+              <router-link :to="{name: 'Account', params: {address: item.address}}" class="d-block mb-2 text-overflow">{{item.address}}</router-link>
+              <p class="font-weight-bold">{{item.type}}</p>
             </td>
             <td class="col-6 col-md-4">
-              <p class="text-right">{{item.transaction.date | callDateToTimestamp}}</p>
-              <p class="text-right">{{item | txHumanAmount}}</p>
+              <p class="text-right">{{item.outcome.timestamp | toTimestamp}}</p>
+              <p class="text-right">{{item | toHumanTx}}</p>
             </td>
           </tr>
           </tbody>
@@ -104,6 +104,7 @@
 <script>
 // @ is an alias to /src
 import CheckNetwork from '../api/network'
+import axios from 'axios'
 
 export default {
   name: 'Home',
@@ -130,6 +131,20 @@ export default {
       this.$toast.error("fail to connect callchain");
       return;
     }
+    // fetch init data
+    var blk_list = [];
+    var tx_list = [];
+    try {
+      blk_list = await axios.get("http://data.callchain.live/blocks/latest");
+      blk_list = blk_list.data.data;
+      tx_list = await axios.get("http://data.callchain.live/transactions/latest");
+      tx_list = tx_list.data.data;
+    } catch (e) {
+      this.$toast.error("fail to fetch data for init");
+      console.dir(e);
+    }
+    this.$store.dispatch("initData", {blk_list: blk_list, tx_list: tx_list});
+   
   }
 }
 </script>

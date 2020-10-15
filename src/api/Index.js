@@ -28,8 +28,9 @@ export default function(server) {
     });
     
     api.on('transactions', async function(tx) {
-        console.log(JSON.stringify(tx));
-        store.commit('updateTransactions', tx);
+        var data = await api.getTransaction(tx.transaction.hash);
+        console.log(JSON.stringify(data));
+        store.commit('updateTransactions', data);
     });
 
     return api;
