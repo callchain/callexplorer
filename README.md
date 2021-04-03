@@ -5,7 +5,7 @@
 CallExplorer is an open-source explorer for Callchain system. It's used to help CALL token user to query its account, transaction and so on. It is decentrialized browser for blockchain, no backend server is needed. All data is from Callchain blockchain system.
 
 
-Production CallExplorer Url: [http://block.callchain.live](http://block.callchain.live)
+Production CallExplorer Url: [http://block.callchain.cc](http://block.callchain.cc)
 
 
 ## Gettting started
