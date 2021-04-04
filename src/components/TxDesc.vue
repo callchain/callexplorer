@@ -57,7 +57,7 @@
             kMark: function (value) {
                 if (!value) return '';
                 var str = '' + value;
-                var intPart = Number(value).toFixed(0);
+                var intPart = parseInt(value) + '';
                 var pointPart = str.substring(str.lastIndexOf('.') === -1 ? str.length : str.lastIndexOf('.'));
                 var intPartFormat = intPart.toString().replace(/(\d)(?=(?:\d{3})+$)/g, '$1,');
                 return intPartFormat + pointPart;

@@ -10,7 +10,7 @@
             </div>
             <div class="dates text-no-wrap text-md-right text-sm-left col-md-2 col-sm-12 mt-4">
                 <div class="">Ledger 
-                    <router-link :to="{name: 'Block', params: {height: Number(tx.outcome.ledgerVersion)}}">
+                    <router-link :to="{name: 'Block', params: {height: tx.outcome ? Number(tx.outcome.ledgerVersion) : 0}}">
                         {{tx.outcome ? tx.outcome.ledgerVersion : ''}}
                     </router-link>
                     </div>
