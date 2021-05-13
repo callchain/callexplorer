@@ -135,9 +135,9 @@ export default {
     var blk_list = [];
     var tx_list = [];
     try {
-      blk_list = await axios.get("http://data.callchain.cc/blocks/latest");
+      blk_list = await axios.get("https://data.callchain.cc/blocks/latest");
       blk_list = blk_list.data.data;
-      tx_list = await axios.get("http://data.callchain.cc/transactions/latest");
+      tx_list = await axios.get("https://data.callchain.cc/transactions/latest");
       tx_list = tx_list.data.data;
     } catch (e) {
       this.$toast.error("fail to fetch data for init");
