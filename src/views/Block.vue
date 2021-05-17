@@ -196,6 +196,7 @@ import CheckNetwork from '../api/network'
         letter-spacing: 0;
         line-height: 22px;
         font-weight: 500;
+        margin-bottom: 10px;
     }
 
     .tr, .th {
