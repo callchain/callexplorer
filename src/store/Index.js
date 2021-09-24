@@ -21,7 +21,7 @@ export default new Vuex.Store({
     api: new call.CallAPI({ server: 'wss://s1.callchain.live:5020' }),
     status: {feePool: '0', baseFeeCALL: '0', reserveBaseCALL: '0', reserveIncrementCALL: '0'},
     height: 24997812,
-    server: {host: 's2.callchain.cc', port: '5020', ssl: false},
+    server: {host: 's1.callchain.live', port: '5020', ssl: true},
     blocks: [],
     transactions: []
   },
