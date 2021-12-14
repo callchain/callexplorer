@@ -18,7 +18,7 @@ const DEFAULT_TRANSACTIONS = [{"type":"payment","address":"cJm9pZBjckgA1zbr1ezFE
 
 export default new Vuex.Store({
   state: {
-    api: new call.CallAPI({ server: 'wss://s1.callchain.live:5020' }),
+    api: new call.CallAPI({ server: 'wss://s1.callchain.cc:5020' }),
     status: {feePool: '0', baseFeeCALL: '0', reserveBaseCALL: '0', reserveIncrementCALL: '0'},
     height: 24997812,
     server: {host: 's1.callchain.live', port: '5020', ssl: true},
