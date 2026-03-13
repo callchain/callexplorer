@@ -1,10 +1,10 @@
 import store from '../store/Index';
-// import Parser from './transaction-parser';
+import { CallAPI } from './call-core-wrapper';
 import vue from '../main';
 
 export default function(server) {
     const url = (server.ssl ? 'wss://' : 'ws://') + server.host + ':' + server.port;
-    var api = new call.CallAPI({
+    var api = new CallAPI({
         server: url
     });
 
@@ -12,12 +12,12 @@ export default function(server) {
         vue.$toast.error('call connection error, code=' + code + ', msg=' + msg);
         console.log('call connection error, code=' + code + ', msg=' + msg);
     });
-    
+
     api.on('connected', function() {
         vue.$toast.success('Server Connected');
         console.log('connect it');
     });
-    
+
     api.on('disconnected', function() {
         vue.$toast.warning('Server Disconnected');
         console.log('server disconnect');
@@ -26,7 +26,7 @@ export default function(server) {
     api.on('ledger', function(ledger) {
         store.commit('updateLedger', ledger);
     });
-    
+
     api.on('transactions', async function(tx) {
         var data = await api.getTransaction(tx.transaction.hash);
         console.log(JSON.stringify(data));
@@ -35,4 +35,3 @@ export default function(server) {
 
     return api;
 }
-
